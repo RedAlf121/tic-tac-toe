@@ -1,0 +1,100 @@
+body {
+  background-color: #000; /* Fondo negro para resaltar el efecto de neón */
+  color: #fff; /* Color de texto blanco */
+  font-family: sans-serif;
+  margin: 20px;
+  font-size: large;
+}
+
+h1 {
+  text-align: center;
+}
+
+h2{
+  margin-top: 20px;
+  text-align: center;
+  font-size: 25px;
+  color: #39ff14; /* Color verde neón */
+  text-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 40px #39ff14, 0 0 80px #39ff14;
+}
+
+h2.o{
+  color: #9400d3; /* Color morado neón para O */
+  text-shadow: 0 0 5px #9400d3, 0 0 10px #9400d3, 0 0 20px #9400d3, 0 0 40px #9400d3, 0 0 80px #9400d3;
+}
+
+h2.x{
+  color: #ff073a; /* Color rojo neón para X */
+  text-shadow: 0 0 5px #ff073a, 0 0 10px #ff073a, 0 0 20px #ff073a, 0 0 40px #ff073a, 0 0 80px #ff073a;
+}
+
+h3 {
+  margin-top: 0;
+  font-size: 18px;
+  color: #ff073a; /* Color rojo neón */
+  text-shadow: 0 0 5px #ff073a, 0 0 10px #ff073a, 0 0 20px #ff073a, 0 0 40px #ff073a, 0 0 80px #ff073a;
+}
+
+.square {
+  width: 100px;
+  height: 100px;
+  background-color: #222;
+  border: 2px solid #0ff; /* Color cian neón */
+  color: #0ff; /* Color cian neón */
+  font-size: 50px;
+  text-align: center;
+  line-height: 100px;
+  text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff, 0 0 80px #0ff;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  position: relative; /* Necesario para z-index */
+  z-index: 1; /* Asegura que el efecto de neón esté por encima */
+}
+
+.square:hover {
+  background-color: #333;
+  box-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
+  z-index: 2; /* Aumenta el z-index al hacer hover */
+}
+
+.square.x {
+  color: #ff073a; /* Color rojo neón para X */
+  text-shadow: 0 0 5px #ff073a, 0 0 10px #ff073a, 0 0 20px #ff073a, 0 0 40px #ff073a, 0 0 80px #ff073a;
+}
+
+.square.o {
+  color: #9400d3; /* Color morado neón para O */
+  text-shadow: 0 0 5px #9400d3, 0 0 10px #9400d3, 0 0 20px #9400d3, 0 0 40px #9400d3, 0 0 80px #9400d3;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.board-row:after {
+  clear: both;
+  content: '';
+  display: table;
+}
+
+.status {
+  margin-bottom: 10px;
+  color: #ff073a; /* Color rojo neón */
+  text-shadow: 0 0 5px #ff073a, 0 0 10px #ff073a, 0 0 20px #ff073a, 0 0 40px #ff073a, 0 0 80px #ff073a;
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.game-info {
+  margin-left: 20px;
+}
