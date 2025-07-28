@@ -8,12 +8,13 @@ body {
 
 h1 {
   text-align: center;
+  font-size: 3.5rem;
 }
 
 h2{
   margin-top: 20px;
   text-align: center;
-  font-size: 25px;
+  font-size: 2.3rem;
   color: #39ff14; /* Color verde neón */
   text-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 40px #39ff14, 0 0 80px #39ff14;
 }
@@ -97,4 +98,41 @@ h3 {
 
 .game-info {
   margin-left: 20px;
+}
+
+/* Neon button styles for Menu */
+.board-actions,.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 30px;
+}
+.board-actions button,.menu-buttons button {
+  background: #222;
+  color: #0ff;
+  border: 2px solid #0ff;
+  font-size: 1.5rem;
+  padding: 15px 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff;
+  box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+  transition: background 0.3s, box-shadow 0.3s, color 0.3s;
+}
+.board-actions button:hover,.menu-buttons button:hover {
+  background: #333;
+  color: #39ff14;
+  border-color: #39ff14;
+  text-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14, 0 0 20px #39ff14;
+  box-shadow: 0 0 20px #39ff14, 0 0 40px #39ff14;
+}
+
+/* Centrado de elementos principales */
+.main-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
 }

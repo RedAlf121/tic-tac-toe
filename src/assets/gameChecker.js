@@ -16,8 +16,7 @@ const checkWinner = (array) => {
             return array[a];
         }
     }
-
-    if(array.every((value,index,array)=>value!==''))
+    if(array.every((value)=>value!==''))
         return 'tie'
     
     return null; 

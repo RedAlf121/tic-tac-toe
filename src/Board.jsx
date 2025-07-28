@@ -3,6 +3,7 @@ import Square from './components/Square.jsx'
 import GameState from './components/GameState.jsx'
 import { useEffect, useState } from 'react'
 import gameChecker from './assets/gameChecker.js'
+import { GAME_MODE } from './assets/gameMode.js'
 
 function splitSquare(index, value, handleClick) {
   return (
@@ -13,7 +14,8 @@ function splitSquare(index, value, handleClick) {
 }
 
 
-function Board() {
+function Board(gamemode=GAME_MODE.Player) {
+  console.log(gamemode)
   const [playerTurn, setPlayerTurn] = useState(true) // true for O ; false for X
   const [squareValues, setSquareValues] = useState(Array(9).fill(''))
   const [gameState,setGameState] = useState(null)
@@ -45,16 +47,29 @@ function Board() {
     return false
   }
   
+  function handleRestart() {
+    setSquareValues(Array(9).fill(''));
+    setGameState(null);
+    setPlayerTurn(true);
+  }
+
+  function handleBack() {
+    window.location.reload(); // O puedes navegar a otra vista si usas router
+  }
+
   const rows = squareValues.map((value, index) => splitSquare(index, value, () => handleClick(index)))
-  useEffect(changeState,[playerTurn])
+  useEffect(changeState,[playerTurn, squareValues])
   return (
     <>
       <div>
-        <h1>Tic Tac Toe</h1>
         <div className='board'>
           {rows}
         </div>
         <GameState value={whichTurn()} state={gameState}/>
+        <div className="board-actions">
+          <button onClick={handleBack}>Regresar</button>
+          <button onClick={handleRestart}>Reiniciar</button>
+        </div>
       </div>
     </>
   )
