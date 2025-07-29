@@ -4,6 +4,7 @@ import GameState from './components/GameState.jsx'
 import { useEffect, useState } from 'react'
 import gameChecker from './assets/gameChecker.js'
 import { GAME_MODE } from './assets/gameMode.js'
+import { play } from './assets/ai.js'
 
 function splitSquare(index, value, handleClick) {
   return (
@@ -15,7 +16,6 @@ function splitSquare(index, value, handleClick) {
 
 
 function Board(gamemode=GAME_MODE.Player) {
-  console.log(gamemode)
   const [playerTurn, setPlayerTurn] = useState(true) // true for O ; false for X
   const [squareValues, setSquareValues] = useState(Array(9).fill(''))
   const [gameState,setGameState] = useState(null)
@@ -25,8 +25,15 @@ function Board(gamemode=GAME_MODE.Player) {
   }
 
   function handleClick(index) {
-    if(!gameState && playerMovement(index))
+    if(!gameState && playerMovement(index)){
       setPlayerTurn(!playerTurn)
+      console.log(gamemode.gameMode)
+      if(gamemode.gameMode === GAME_MODE.AI){
+        setSquareValues(play(squareValues));
+        setPlayerTurn(true);
+      }
+    }
+    
   }
   
   function changeState() {
@@ -37,11 +44,17 @@ function Board(gamemode=GAME_MODE.Player) {
     }
   }
   
+  function aiTurn(){
+    return gamemode.gameMode === GAME_MODE.AI && !playerTurn;
+  }
+
   function playerMovement(index) {
     const newSquareValues = [...squareValues]
-    if(newSquareValues[index] === ''){
+    if(newSquareValues[index] === '' && !aiTurn()){
       newSquareValues[index] = whichTurn()
-      setSquareValues(newSquareValues)
+      squareValues[index] = newSquareValues[index]
+      setSquareValues(squareValues)
+      console.log(squareValues)
       return true
     }
     return false
