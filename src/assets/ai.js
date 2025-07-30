@@ -7,51 +7,52 @@ import gameState from "./gameChecker.js";
  }
  */
 export function play(board,turn='x'){
-    const nextMove = maxValue(board, turn, turn);
-    console.log(nextMove.score);
-    return result(board,nextMove.bestAction);
+    const variations = actions(board,turn);
+    let bestAction = {};
+    let score = -Infinity;
+    let localScore = -Infinity
+    for(let action of variations) {
+        const nextState = result(board, action);
+        if(terminal(nextState)){
+            localScore = utility(nextState,turn);
+        }else{
+            localScore = maxValue(nextState,nextTurn(turn),turn);
+        }
+        if(score < localScore){
+            score = localScore;
+            bestAction = action;
+        }
+    }
+    console.log("The best movement is:",bestAction)
+    return result(board,bestAction);
 }
 
 function nextTurn(turn){
     return (turn === 'x')? 'o' : 'x';
 }
 
-function maxValue(board,turn='x',initial='x'){
+function maxValue(board,turn='x',initial='x',depth=0){
     if(terminal(board)){
-        return utility(board,initial);
+        return utility(board,initial)-depth;
     }
     let score = -Infinity;
-    let bestAction = {}
     for(let action of actions(board,turn)){
-        const oponnentMove = minValue(result(board, action,initial),nextTurn(turn),initial);
-        if(score < oponnentMove.score){
-            score = oponnentMove.score;
-            bestAction = action;
-        }
+        const localScore = minValue(result(board, action,initial),nextTurn(turn),initial,depth+1);
+        score = Math.max(score,localScore);
     }
-    return {
-        score,
-        bestAction
-    };
+    return score;
 }
 
-function minValue(board,turn='x',initial='x'){
+function minValue(board,turn='x',initial='x',depth=0){
     if(terminal(board)){
         return utility(board,initial);
     }
     let score = Infinity;
-    let bestAction = {}
     for(let action of actions(board,turn)){
-        const oponnentMove = maxValue(result(board, action),nextTurn(turn),initial);
-        if(score > oponnentMove.score){
-            score = oponnentMove.score;
-            bestAction = action;
-        }
+        const localScore = maxValue(result(board, action),nextTurn(turn),initial,depth+1);
+        score = Math.min(score,localScore);
     }
-    return {
-        score,
-        best_action: bestAction
-    };
+    return score;
 }
 
 function terminal(board){
@@ -95,6 +96,6 @@ function actions(board,turn='x'){
 function utility(board,initial='x'){
     const state = gameState(board);
     if(state==='tie')
-        return {score: 0, bestAction: ''};
-    else return (state===initial)? {score: 1, bestAction: ''} : {score: -1, bestAction: ''}; 
+        return 0;
+    else return (state===initial)? 10 : -10; 
 }

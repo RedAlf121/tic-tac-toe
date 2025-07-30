@@ -80,8 +80,8 @@ function Board(gamemode=GAME_MODE.Player) {
         </div>
         <GameState value={whichTurn()} state={gameState}/>
         <div className="board-actions">
-          <button onClick={handleBack}>Regresar</button>
-          <button onClick={handleRestart}>Reiniciar</button>
+          <button onClick={handleBack}>Back</button>
+          <button onClick={handleRestart}>Restart</button>
         </div>
       </div>
     </>
