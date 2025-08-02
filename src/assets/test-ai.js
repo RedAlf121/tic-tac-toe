@@ -13,10 +13,15 @@ console.log('Optimal move for mid-game board:', play(midBoard));
 */
 const easyBoard = ['o', 'x', '', 'o', '', '', '', '', ''];
 console.log('Optimal move for easy board:', play(easyBoard));
+
+const gfgBoard = ['x', 'o', 'x', 'o', 'o', 'x', '', '', '' ]
+console.log('Optimal move for gfgBoard is:', play(gfgBoard))
+const almostFull = ['x', 'o', 'x', 'x', 'o', 'o', 'o', '', ''];
+console.log('Optimal move for almost full board:', play(almostFull));
+const lastPlay = ['x','x','o','','o','','','o',''];
+console.log('Optimal move for almost last play:', play(lastPlay));
 // Example: almost full board
 /*
 console.log('Optimal move for easy win:', play(easyWin));
 const easyWin = ['x', 'o', '', 'x', '', '', '', '', ''];
-const almostFull = ['x', 'o', 'x', 'x', 'o', 'o', 'o', '', ''];
-console.log('Optimal move for almost full board:', play(almostFull));
 */

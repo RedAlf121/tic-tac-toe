@@ -1,30 +1,20 @@
 import gameState from "./gameChecker.js";
-/**
- BestMovement
- {
-    score: int,
-    bestAction: Movement
- }
- */
+
 export function play(board,turn='x'){
-    const variations = actions(board,turn);
-    let bestAction = {};
+    console.log(turn);
+    const next = nextTurn(turn)
+    const variations = actions(board,next);
     let score = -Infinity;
-    let localScore = -Infinity
+    let bestAction = 0
     for(let action of variations) {
-        const nextState = result(board, action);
-        if(terminal(nextState)){
-            localScore = utility(nextState,turn);
-        }else{
-            localScore = maxValue(nextState,nextTurn(turn),turn);
-        }
+        const localScore = minValue(result(board, action, next), next, turn);
+        console.log(`action: ${action} score: ${localScore}`)
         if(score < localScore){
             score = localScore;
             bestAction = action;
         }
     }
-    console.log("The best movement is:",bestAction)
-    return result(board,bestAction);
+    return result(board,bestAction,turn);
 }
 
 function nextTurn(turn){
@@ -33,7 +23,8 @@ function nextTurn(turn){
 
 function maxValue(board,turn='x',initial='x',depth=0){
     if(terminal(board)){
-        return utility(board,initial)-depth;
+        const utilityValue = utility(board, initial);
+        return (utilityValue!==0)? utilityValue-depth : 0;
     }
     let score = -Infinity;
     for(let action of actions(board,turn)){
@@ -45,11 +36,12 @@ function maxValue(board,turn='x',initial='x',depth=0){
 
 function minValue(board,turn='x',initial='x',depth=0){
     if(terminal(board)){
-        return utility(board,initial);
+        const utilityValue = utility(board, initial);
+        return (utilityValue!==0)? utilityValue+depth : 0;
     }
     let score = Infinity;
     for(let action of actions(board,turn)){
-        const localScore = maxValue(result(board, action),nextTurn(turn),initial,depth+1);
+        const localScore = maxValue(result(board, action,turn),nextTurn(turn),initial,depth+1);
         score = Math.min(score,localScore);
     }
     return score;
@@ -58,39 +50,15 @@ function minValue(board,turn='x',initial='x',depth=0){
 function terminal(board){
     return gameState(board)!==null;
 }
-/*
-movement
-{
-    position: int,
-    value: char
-}
-*/
-function result(board,movement){
-    const newBoard = [...board];
-    newBoard[movement.position] = movement.value;
-    return newBoard;
+
+function result(board,position,turn='x'){
+    return board.map((value,index)=>(index===position)? turn : value);
 }
 
 
-/*
-this function returns a list of movement
-movement
-{
-    position: int,
-    value: char
-}
-*/
-function actions(board,turn='x'){
-    const actionList = [];
-    for(let i in board){
-        if(board[i]===''){
-            actionList.push({
-                position: i,
-                value: turn
-            });
-        }
-    }
-    return actionList;
+function actions(board){
+    return board.map((cell,index)=>(cell==='')? index : null)
+                .filter((value)=>value!==null);
 }
 
 function utility(board,initial='x'){
