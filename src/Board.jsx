@@ -21,13 +21,13 @@ function Board(gamemode=GAME_MODE.Player) {
   const [gameState,setGameState] = useState(null)
 
   function whichTurn() {
-    return playerTurn ? 'O' : 'X'
+    return playerTurn ? 'o' : 'x'
   }
 
   function handleClick(index) {
     if(!gameState && playerMovement(index)){
       setPlayerTurn(!playerTurn)
-      if(gamemode.gameMode === GAME_MODE.AI){
+      if(gameChecker(squareValues)===null && gamemode.gameMode === GAME_MODE.AI){
         setSquareValues(play(squareValues.map((value)=>(value==='O')? 'o' : value)));
         setPlayerTurn(true);
       }
@@ -39,7 +39,7 @@ function Board(gamemode=GAME_MODE.Player) {
     const gameChecked = gameChecker(squareValues)
     setGameState(gameChecked)
     if (gameChecked) {
-      setPlayerTurn(gameChecked == 'O')
+      setPlayerTurn(gameChecked == 'o')
     }
   }
   

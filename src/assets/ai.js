@@ -13,37 +13,21 @@ function findInstakill(board, turn) {
     return moves;
 }
 
-function findDoubleDecision(board, turn) {
-    let moves = [];
-    board.forEach((cell, idx) => {
-        if (cell === "") {
-            let newBoard = result(board, idx, turn);
-            let insta = findInstakill(newBoard, turn);
-            if (insta.length >= 2) {
-                moves.push(idx);
-            }
-        }
-    });
-    return moves;
-}
-
-
 export function play(board,turn='x'){
     console.log(turn);
     const next = nextTurn(turn)
+    
     const instaKills = findInstakill(board,turn);
     if(instaKills.length !== 0)
         return result(board,instaKills[0],turn);
-    const doubleDecisions = findDoubleDecision(board,turn);
-    if(doubleDecisions.length!==0)
-        return result(board,doubleDecisions[0],turn);
+    
     const variations = actions(board,next);
-    let score = -Infinity;
+    let score = Infinity;
     let bestAction = undefined
     for(let action of variations) {
-        const localScore = minValue(result(board, action, next), next, turn);
+        const localScore = maxValue(result(board, action, next), next, turn);
         console.log(`action: ${action} score: ${localScore}`)
-        if(score < localScore){
+        if(score > localScore){
             score = localScore;
             bestAction = action;
         }
