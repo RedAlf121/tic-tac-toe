@@ -31,15 +31,10 @@ Defines the available game modes. It's an enum.
 The option to play against an AI is currently being implemented.
 The AI uses the Minimax algorithm, explained in the [CS50 Introduction to AI lecture](https://www.youtube.com/watch?v=5NgNicANyqM), to make optimal decisions and offer a challenge to the player.
 
-## How to Run
-Install dependencies:
-```
-npm install
-```
-Start the project:
-```
-npm run dev
-```
+For better understanding [(click here)](src/assets/Minimax.md)
+
+
+
 ## Credits
 Inspired by [CS50 Introduction to AI](https://www.youtube.com/watch?v=5NgNicANyqM).
 Developed with React.
