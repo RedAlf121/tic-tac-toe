@@ -27,9 +27,8 @@ function Board(gamemode=GAME_MODE.Player) {
   function handleClick(index) {
     if(!gameState && playerMovement(index)){
       setPlayerTurn(!playerTurn)
-      console.log(gamemode.gameMode)
       if(gamemode.gameMode === GAME_MODE.AI){
-        setSquareValues(play(squareValues));
+        setSquareValues(play(squareValues.map((value)=>(value==='O')? 'o' : value)));
         setPlayerTurn(true);
       }
     }

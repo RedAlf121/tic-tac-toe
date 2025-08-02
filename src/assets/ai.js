@@ -1,11 +1,45 @@
 import gameState from "./gameChecker.js";
 
+function findInstakill(board, turn) {
+    let moves = [];
+    board.forEach((cell, idx) => {
+        if (cell === "") {
+            let newBoard = result(board, idx, turn);
+            if (gameState(newBoard) === turn) {
+                moves.push(idx);
+            }
+        }
+    });
+    return moves;
+}
+
+function findDoubleDecision(board, turn) {
+    let moves = [];
+    board.forEach((cell, idx) => {
+        if (cell === "") {
+            let newBoard = result(board, idx, turn);
+            let insta = findInstakill(newBoard, turn);
+            if (insta.length >= 2) {
+                moves.push(idx);
+            }
+        }
+    });
+    return moves;
+}
+
+
 export function play(board,turn='x'){
     console.log(turn);
     const next = nextTurn(turn)
+    const instaKills = findInstakill(board,turn);
+    if(instaKills.length !== 0)
+        return result(board,instaKills[0],turn);
+    const doubleDecisions = findDoubleDecision(board,turn);
+    if(doubleDecisions.length!==0)
+        return result(board,doubleDecisions[0],turn);
     const variations = actions(board,next);
     let score = -Infinity;
-    let bestAction = 0
+    let bestAction = undefined
     for(let action of variations) {
         const localScore = minValue(result(board, action, next), next, turn);
         console.log(`action: ${action} score: ${localScore}`)
@@ -14,6 +48,7 @@ export function play(board,turn='x'){
             bestAction = action;
         }
     }
+    console.log('I will move here ',bestAction)
     return result(board,bestAction,turn);
 }
 
