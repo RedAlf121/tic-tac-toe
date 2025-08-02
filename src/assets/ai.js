@@ -16,24 +16,25 @@ function findInstakill(board, turn) {
 export function play(board,turn='x'){
     console.log(turn);
     const next = nextTurn(turn)
-    
     const instaKills = findInstakill(board,turn);
     if(instaKills.length !== 0)
-        return result(board,instaKills[0],turn);
+        return result(board,instaKills[Math.round(Math.random()*100)%instaKills.length],turn);
     
     const variations = actions(board,next);
     let score = Infinity;
-    let bestAction = undefined
+    let bestActions = []
     for(let action of variations) {
         const localScore = maxValue(result(board, action, next), next, turn);
         console.log(`action: ${action} score: ${localScore}`)
         if(score > localScore){
             score = localScore;
-            bestAction = action;
+            bestActions = [action];
+        }else if(score===localScore){
+            bestActions.push(action);
         }
     }
-    console.log('I will move here ',bestAction)
-    return result(board,bestAction,turn);
+    console.log('I can move here ',bestActions)
+    return result(board,bestActions[Math.round(Math.random()*100)%bestActions.length],turn);
 }
 
 function nextTurn(turn){
