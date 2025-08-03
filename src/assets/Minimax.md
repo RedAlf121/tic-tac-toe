@@ -25,12 +25,13 @@ The minimax algorithm is an artificial intelligence technique used to make strat
 
 📚 ✏️ Code Implementation
 
-⦁ play: Function that selects and executes the best possible move for the current turn. If there’s a direct winning move (instakill), it takes it. If not, it uses minimax to explore all possible next moves and chooses the one that minimizes the opponent's best responses.
-⦁ maxValue and minValue: Recursive functions representing both players’ turns.
-    ⦁ maxValue chooses the move that maximizes the utility for the initial player (the "maximizer").
-    ⦁ minValue simulates the optimal opponent response, minimizing that utility.
-⦁ utility: Assigns a numerical value to the current board state.
-⦁ actions, result, and terminal: Help determine possible moves, the outcome of applying a move, and check if the board is in a final state, respectively.
+⦁ play: Main function that selects and executes the best possible move for the current turn (default is 'x', but configurable). If there is an immediate winning move, it takes it; otherwise, it uses minimax to explore all possible moves and chooses the one that maximizes the result for the current player. If there are several optimal moves, it picks one at random.
+⦁ minimax: Recursive algorithm that simulates all possible moves, alternating between the AI's turn (maximizes utility) and the opponent's turn (minimizes utility). Assigns +10 if the current player wins, -10 if they lose, and 0 for a draw. Uses the aiTurn parameter to alternate between maximizing and minimizing.
+⦁ terminal: Evaluates if the board is in a final state (win, loss, or draw) and returns the corresponding value.
+⦁ nextTurn: Returns the symbol of the next player ('x' or 'o').
+⦁ actions: Returns an array with the indices of the available empty squares to play.
+⦁ result: Returns a new board with the move applied at the indicated position.
+⦁ getRandomIndex: Helps to randomly choose among the best possible moves when there is a tie in score. The goal is to add variability to the behavior so that games do not feel monotonous.
 
 📚 ✏️ Conceptual Summary
 
