@@ -1,18 +1,33 @@
 import gameChecker from './gameChecker.js';
 
+
+function getRandomIndex(actions) {
+    //shuffling the array
+    let shuffled = actions.sort(() => Math.random() - 0.5);
+    const availableIndexes = [...shuffled.keys()];
+    let randomPos = Math.floor(Math.random() * availableIndexes.length);
+    let index = availableIndexes.splice(randomPos, 1)[0];
+    return index;   
+}
+
 export function play(board,turn='x'){
     let score = -Infinity;
-    let bestAction = -1;
+    const bestActions = [];
     for(let action of actions(board,turn,true)){
         board[action]=turn;
         let localScore = minimax(board,turn,0,false);
         board[action]='';
+        console.log(localScore);
         if(score<localScore){
             score=localScore;
-            bestAction=action;
+            bestActions.length=0;
+        }
+        if(score==localScore){
+            bestActions.push(action);
         }
     }
-    return (bestAction!==-1)? result(board,bestAction) : board;
+
+    return (bestActions.length > 0)? result(board,bestActions[getRandomIndex(bestActions)]) : board;
 }
 
 

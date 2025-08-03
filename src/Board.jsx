@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 import gameChecker from './assets/gameChecker.js'
 import { GAME_MODE } from './assets/gameMode.js'
 import { play } from './assets/ai.js'
-import { playAI } from './assets/ai2.js'
 
 function splitSquare(index, value, handleClick) {
   return (
