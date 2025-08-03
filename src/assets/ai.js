@@ -1,89 +1,65 @@
-import gameState from "./gameChecker.js";
-
-function findInstakill(board, turn) {
-    let moves = [];
-    board.forEach((cell, idx) => {
-        if (cell === "") {
-            let newBoard = result(board, idx, turn);
-            if (gameState(newBoard) === turn) {
-                moves.push(idx);
-            }
-        }
-    });
-    return moves;
-}
+import gameChecker from './gameChecker.js';
 
 export function play(board,turn='x'){
-    console.log(turn);
-    const next = nextTurn(turn)
-    const instaKills = findInstakill(board,turn);
-    if(instaKills.length !== 0)
-        return result(board,instaKills[Math.round(Math.random()*100)%instaKills.length],turn);
-    
-    const variations = actions(board,next);
-    let score = Infinity;
-    let bestActions = []
-    for(let action of variations) {
-        const localScore = maxValue(result(board, action, next), next, turn);
-        console.log(`action: ${action} score: ${localScore}`)
-        if(score > localScore){
-            score = localScore;
-            bestActions = [action];
-        }else if(score===localScore){
-            bestActions.push(action);
+    let score = -Infinity;
+    let bestAction = -1;
+    for(let action of actions(board,turn,true)){
+        board[action]=turn;
+        let localScore = minimax(board,turn,0,false);
+        board[action]='';
+        if(score<localScore){
+            score=localScore;
+            bestAction=action;
         }
     }
-    console.log('I can move here ',bestActions)
-    return result(board,bestActions[Math.round(Math.random()*100)%bestActions.length],turn);
+    return (bestAction!==-1)? result(board,bestAction) : board;
+}
+
+
+function minimax(board,turn='x',depth=0,aiTurn=true){
+    const finalState = terminal(board, turn, depth);
+    if(finalState!==null) return finalState;
+    let bestScore = null;
+    let comparison = null;
+    if(aiTurn){
+        //maximize
+        bestScore = -Infinity;
+        comparison = Math.max;
+    }else{
+        //minimize
+        bestScore = Infinity;
+        comparison = Math.min;
+    }
+    for(let action of actions(board)){
+        board[action] = (aiTurn)? turn : nextTurn(turn);
+        const localScore = minimax(board,turn,depth+1,!aiTurn);
+        board[action] = '';
+        bestScore = comparison(bestScore,localScore);
+    }
+    return bestScore;
+}
+
+
+function terminal(board,turn, depth=0){
+    const gameState = gameChecker(board);
+    if(gameState===null) return null;
+    if(gameState==='tie') return 0;
+    if(gameState===turn) return 10-depth;
+    if(gameState===nextTurn(turn)) return -10+depth;
 }
 
 function nextTurn(turn){
     return (turn === 'x')? 'o' : 'x';
 }
 
-function maxValue(board,turn='x',initial='x',depth=0){
-    if(terminal(board)){
-        const utilityValue = utility(board, initial);
-        return (utilityValue!==0)? utilityValue-depth : 0;
-    }
-    let score = -Infinity;
-    for(let action of actions(board,turn)){
-        const localScore = minValue(result(board, action,initial),nextTurn(turn),initial,depth+1);
-        score = Math.max(score,localScore);
-    }
-    return score;
-}
-
-function minValue(board,turn='x',initial='x',depth=0){
-    if(terminal(board)){
-        const utilityValue = utility(board, initial);
-        return (utilityValue!==0)? utilityValue+depth : 0;
-    }
-    let score = Infinity;
-    for(let action of actions(board,turn)){
-        const localScore = maxValue(result(board, action,turn),nextTurn(turn),initial,depth+1);
-        score = Math.min(score,localScore);
-    }
-    return score;
-}
-
-function terminal(board){
-    return gameState(board)!==null;
-}
-
-function result(board,position,turn='x'){
-    return board.map((value,index)=>(index===position)? turn : value);
-}
-
-
 function actions(board){
-    return board.map((cell,index)=>(cell==='')? index : null)
+    return board.map((value,index)=>(value==='')? index : null)
                 .filter((value)=>value!==null);
 }
 
-function utility(board,initial='x'){
-    const state = gameState(board);
-    if(state==='tie')
-        return 0;
-    else return (state===initial)? 10 : -10; 
+function result(board,position,turn='x',aiTurn=true){
+    return board.map((value,index)=>{
+        if(index!==position) return value;
+        return aiTurn? turn : nextTurn(turn);
+    })
 }

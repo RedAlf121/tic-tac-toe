@@ -1,7 +1,6 @@
 {
   "name": "tic-tac-toe",
   "private": true,
-  "homepage": "https://redalf121.github.io/tic-tac-toe/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -9,9 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test-ai": "node src/assets/test-ai.js",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "test-ai": "node src/assets/test-ai.js"
   },
   "dependencies": {
     "react": "^18.3.1",
